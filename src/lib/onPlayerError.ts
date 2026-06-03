@@ -1,8 +1,8 @@
 import { container } from "@sapphire/framework";
 import { EmbedBuilder, TextChannel } from "discord.js";
 import type { Player, GuildQueue } from "discord-player";
-import { config } from "../../lib/config";
-import { ERROR_COLOR } from "../../constants";
+import { config } from "./config";
+import { ERROR_COLOR } from "../constants";
 
 export function registerPlayerError(player: Player): void {
   player.events.on("playerError", async (queue: GuildQueue, error: Error) => {

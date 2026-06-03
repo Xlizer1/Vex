@@ -1,8 +1,8 @@
 import { container } from "@sapphire/framework";
 import { EmbedBuilder, TextChannel } from "discord.js";
 import type { Player, GuildQueue, Track } from "discord-player";
-import { config } from "../../lib/config";
-import { BRAND_COLOR } from "../../constants";
+import { config } from "./config";
+import { BRAND_COLOR } from "../constants";
 
 export function registerPlayerStart(player: Player): void {
   player.events.on("playerStart", async (queue: GuildQueue, track: Track) => {

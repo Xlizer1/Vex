@@ -2,8 +2,8 @@ import { Player } from "discord-player";
 import { YoutubeiExtractor, objectToToken } from "discord-player-youtubei";
 import type { SapphireClient } from "@sapphire/framework";
 import { config } from "./config";
-import { registerPlayerStart } from "../listeners/player/onPlayerStart";
-import { registerPlayerError } from "../listeners/player/onPlayerError";
+import { registerPlayerStart } from "./onPlayerStart";
+import { registerPlayerError } from "./onPlayerError";
 
 let _player: Player;
 

@@ -1,10 +1,10 @@
 import { Listener } from "@sapphire/framework";
-import type { Client } from "discord.js";
+import { Events, type Client } from "discord.js";
 import { startVoiceFragPoller } from "../lib/voiceFragPoller";
 
 export class ReadyListener extends Listener {
   public constructor(context: Listener.LoaderContext, options: Listener.Options) {
-    super(context, { ...options, once: true, event: "ready" });
+    super(context, { ...options, once: true, event: Events.ClientReady });
   }
 
   public run(client: Client) {
