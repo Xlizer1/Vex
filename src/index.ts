@@ -5,6 +5,7 @@ import { sql } from "drizzle-orm";
 import { config } from "./lib/config";
 import { db } from "./db";
 import { stopVoiceFragPoller } from "./lib/voiceFragPoller";
+import { initPlayer } from "./lib/player";
 
 const client = new SapphireClient({
   intents: [
@@ -18,6 +19,8 @@ const client = new SapphireClient({
 });
 
 client.on("error", (err) => client.logger.error(`Client error: ${err}`));
+
+initPlayer(client);
 
 async function shutdown() {
   client.logger.info("Shutting down...");

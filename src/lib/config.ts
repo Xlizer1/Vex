@@ -21,4 +21,8 @@ export const config = {
   DATHOST_PASSWORD:         process.env.DATHOST_PASSWORD,
   STEAM_API_KEY:            process.env.STEAM_API_KEY,
   LEETIFY_API_KEY:          process.env.LEETIFY_API_KEY,
+  MUSIC_CHANNEL_ID:         process.env.MUSIC_CHANNEL_ID,
+  YOUTUBE_ACCESS_TOKEN:     process.env.YOUTUBE_ACCESS_TOKEN,
+  YOUTUBE_REFRESH_TOKEN:    process.env.YOUTUBE_REFRESH_TOKEN,
+  YOUTUBE_TOKEN_EXPIRY:     process.env.YOUTUBE_TOKEN_EXPIRY,
 };

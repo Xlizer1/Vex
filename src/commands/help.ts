@@ -94,6 +94,39 @@ const COMMANDS: Record<string, {
     usage: "/help [command]",
     options: "`command` (choice, optional) — The name of a command to get detailed help for.",
   },
+  play: {
+    description: "Search YouTube or paste a URL to play a song. If something is already playing, the track is added to the queue instead.",
+    usage: "/play <query>",
+    options: "`query` (text, required) — A YouTube URL or search term (e.g. `never gonna give you up`).",
+    notes: "You must be in a voice channel. If the bot is already in a different voice channel, the command will be rejected. Only works in the music channel.",
+  },
+  pause: {
+    description: "Pauses the current track. Use `/resume` to continue.",
+    usage: "/pause",
+    notes: "Only works when something is actively playing.",
+  },
+  resume: {
+    description: "Resumes playback after a `/pause`.",
+    usage: "/resume",
+    notes: "Only works when playback is paused.",
+  },
+  skip: {
+    description: "Skips the current track and moves to the next one in the queue. If the queue is empty, the bot stays in the channel silently.",
+    usage: "/skip",
+  },
+  stop: {
+    description: "Stops playback and clears the entire queue. The bot stays in the voice channel.",
+    usage: "/stop",
+    notes: "The bot never disconnects from voice — use this to clear the queue without kicking it out of the channel.",
+  },
+  queue: {
+    description: "Shows the current queue — the track playing now and up to 10 upcoming tracks, with the total remaining duration.",
+    usage: "/queue",
+  },
+  nowplaying: {
+    description: "Shows a detailed embed for the currently playing track including title, duration progress, and who requested it.",
+    usage: "/nowplaying",
+  },
 };
 
 const OVERVIEW_FIELDS = [
@@ -109,6 +142,10 @@ const OVERVIEW_FIELDS = [
   {
     name: "Setup  ⚙️ Admin only",
     value: "`/setup-ranks` — Create CS2 rating roles and post the selection panel\n`/setup-faceit` — Create FACEIT level roles and post the selection panel",
+  },
+  {
+    name: "Music  🎵 Music channel only",
+    value: "`/play` — Play a song or add to queue\n`/pause` — Pause playback\n`/resume` — Resume playback\n`/skip` — Skip current track\n`/stop` — Stop and clear queue\n`/queue` — Show the queue\n`/nowplaying` — Show current track",
   },
   {
     name: "Utilities",
