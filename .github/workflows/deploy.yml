@@ -32,25 +32,30 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1
+        uses: nick-fields/retry@v2
         env:
           ENV_CONTENT: ${{ secrets.ENV_FILE }}
           IMAGE: ${{ secrets.DOCKER_USERNAME }}/vex:latest
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: root
-          key: ${{ secrets.VPS_SSH_KEY }}
-          envs: ENV_CONTENT,IMAGE
-          script: |
+          max_attempts: 3
+          timeout_minutes: 2
+          command: |
             set -e
-            mkdir -p /opt/vex
+            echo "$SSH_KEY" > /tmp/vps_key
+            chmod 600 /tmp/vps_key
+            printf '%s' "$ENV_CONTENT" > /tmp/vex.env
 
-            printf '%s' "$ENV_CONTENT" > /opt/vex/.env
+            scp -o StrictHostKeyChecking=no -i /tmp/vps_key /tmp/vex.env root@$VPS_HOST:/opt/vex/.env
 
-            cat > /opt/vex/docker-compose.yml << EOF
+            ssh -o StrictHostKeyChecking=no -i /tmp/vps_key root@$VPS_HOST "
+              set -e
+              mkdir -p /opt/vex
+              cat > /opt/vex/docker-compose.yml << 'EOF'
             services:
               vex:
-                image: ${IMAGE}
+                image: $IMAGE
                 container_name: vex
                 restart: unless-stopped
                 env_file: .env
@@ -71,7 +76,7 @@ jobs:
                 volumes:
                   - vex-db-data:/var/lib/postgresql/data
                 healthcheck:
-                  test: ["CMD-SHELL", "pg_isready -U postgres -d vertex"]
+                  test: [\"CMD-SHELL\", \"pg_isready -U postgres -d vertex\"]
                   interval: 5s
                   timeout: 5s
                   retries: 5
@@ -85,6 +90,6 @@ jobs:
               vex-network:
                 driver: bridge
             EOF
-
-            docker pull ${IMAGE}
-            docker compose -f /opt/vex/docker-compose.yml up -d --pull always
+              docker pull $IMAGE
+              docker compose -f /opt/vex/docker-compose.yml up -d --pull always
+            "
