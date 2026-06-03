@@ -31,6 +31,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Test VPS connectivity
+        run: nc -zv -w 10 ${{ secrets.VPS_HOST }} 22
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
         env:
