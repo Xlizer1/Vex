@@ -31,7 +31,7 @@ async function shutdown() {
 process.on("SIGINT",  shutdown);
 process.on("SIGTERM", shutdown);
 
-dbClient.unsafe("CREATE SCHEMA IF NOT EXISTS vex")
+(dbClient as unknown as (strings: TemplateStringsArray) => Promise<unknown>)`CREATE SCHEMA IF NOT EXISTS vex`
   .then(() => migrate(db, { migrationsFolder: "./drizzle" }))
   .then(() => client.login(config.DISCORD_TOKEN))
   .catch((err) => {
