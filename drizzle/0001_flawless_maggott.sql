@@ -1,0 +1,1 @@
+ALTER TABLE "vex"."users" ADD COLUMN "steam_id" varchar(20);

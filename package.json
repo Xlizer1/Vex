@@ -1,0 +1,25 @@
+{
+  "name": "vex",
+  "module": "index.ts",
+  "main": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.31.10",
+    "postgres": "^3.4.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@sapphire/discord.js-utilities": "^7.3.3",
+    "@sapphire/framework": "^5.5.0",
+    "discord.js": "^14.26.4",
+    "drizzle-orm": "^0.45.2",
+    "leetify-api": "^0.1.0"
+  },
+  "scripts": {
+    "start:dev": "bun run --watch src/index.ts"
+  }
+}
