@@ -18,7 +18,7 @@ export const QUEUE_OPTIONS = {
   leaveOnStopCooldown:   0,
 } as const;
 
-export function initPlayer(client: SapphireClient): Player {
+export async function initPlayer(client: SapphireClient): Promise<Player> {
   _player = new Player(client as never, { skipFFmpeg: false });
 
   const authToken = config.YOUTUBE_ACCESS_TOKEN
@@ -29,7 +29,7 @@ export function initPlayer(client: SapphireClient): Player {
       })
     : "";
 
-  _player.extractors.register(YoutubeiExtractor, {
+  await _player.extractors.register(YoutubeiExtractor, {
     authentication: authToken,
   });
 

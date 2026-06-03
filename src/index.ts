@@ -19,8 +19,6 @@ const client = new SapphireClient({
 
 client.on("error", (err) => client.logger.error(`Client error: ${err}`));
 
-initPlayer(client);
-
 async function shutdown() {
   client.logger.info("Shutting down...");
   stopVoiceFragPoller();
@@ -34,6 +32,7 @@ process.on("SIGTERM", shutdown);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (dbClient as any)`CREATE SCHEMA IF NOT EXISTS vex`
   .then(() => migrate(db, { migrationsFolder: "./drizzle" }))
+  .then(() => initPlayer(client))
   .then(() => client.login(config.DISCORD_TOKEN))
   .catch((err: unknown) => {
     console.error("Startup failed:", err);
