@@ -1,6 +1,6 @@
 services:
   vex:
-    image: ${VEX_IMAGE:-ghcr.io/xlizer/vex:latest}
+    image: ${VEX_IMAGE:-xlizer1/vex:latest}
     container_name: vex
     restart: unless-stopped
     env_file: .env
