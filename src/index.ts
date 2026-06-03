@@ -1,9 +1,8 @@
 import { SapphireClient } from "@sapphire/framework";
 import { GatewayIntentBits } from "discord.js";
 import { migrate } from "drizzle-orm/bun-sql/migrator";
-import { sql } from "drizzle-orm";
 import { config } from "./lib/config";
-import { db } from "./db";
+import { db, client as dbClient } from "./db";
 import { stopVoiceFragPoller } from "./lib/voiceFragPoller";
 import { initPlayer } from "./lib/player";
 
@@ -32,7 +31,7 @@ async function shutdown() {
 process.on("SIGINT",  shutdown);
 process.on("SIGTERM", shutdown);
 
-db.execute(sql`CREATE SCHEMA IF NOT EXISTS vex`)
+dbClient.unsafe("CREATE SCHEMA IF NOT EXISTS vex")
   .then(() => migrate(db, { migrationsFolder: "./drizzle" }))
   .then(() => client.login(config.DISCORD_TOKEN))
   .catch((err) => {
