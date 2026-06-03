@@ -1,0 +1,10 @@
+node_modules
+.env
+.env.*
+.claude
+.git
+.gitignore
+CLAUDE.md
+README.md
+scripts/
+drizzle.config.ts

@@ -1,0 +1,94 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set lowercase image name
+        run: echo "IMAGE=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/vex" >> $GITHUB_ENV
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE }}:latest
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        env:
+          ENV_CONTENT: ${{ secrets.ENV_FILE }}
+          IMAGE: ${{ env.IMAGE }}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          envs: ENV_CONTENT,IMAGE
+          script: |
+            set -e
+            mkdir -p /opt/vex
+
+            # Write .env from secret
+            printf '%s' "$ENV_CONTENT" > /opt/vex/.env
+
+            # Write docker-compose.yml with resolved image name
+            cat > /opt/vex/docker-compose.yml << EOF
+            services:
+              vex:
+                image: ${IMAGE}:latest
+                container_name: vex
+                restart: unless-stopped
+                env_file: .env
+                depends_on:
+                  vex-db:
+                    condition: service_healthy
+                networks:
+                  - vex-network
+
+              vex-db:
+                image: postgres:15-alpine
+                container_name: vex-db
+                restart: unless-stopped
+                environment:
+                  POSTGRES_DB: vertex
+                  POSTGRES_USER: postgres
+                  POSTGRES_PASSWORD: \${DB_PASSWORD}
+                volumes:
+                  - vex-db-data:/var/lib/postgresql/data
+                healthcheck:
+                  test: ["CMD-SHELL", "pg_isready -U postgres -d vertex"]
+                  interval: 5s
+                  timeout: 5s
+                  retries: 5
+                networks:
+                  - vex-network
+
+            volumes:
+              vex-db-data:
+
+            networks:
+              vex-network:
+                driver: bridge
+            EOF
+
+            # Pull latest bot image and (re)start everything
+            docker pull ${IMAGE}:latest
+            docker compose -f /opt/vex/docker-compose.yml up -d --pull always

@@ -1,0 +1,36 @@
+services:
+  vex:
+    image: ${VEX_IMAGE:-ghcr.io/xlizer/vex:latest}
+    container_name: vex
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      vex-db:
+        condition: service_healthy
+    networks:
+      - vex-network
+
+  vex-db:
+    image: postgres:15-alpine
+    container_name: vex-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: vertex
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - vex-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d vertex"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vex-network
+
+volumes:
+  vex-db-data:
+
+networks:
+  vex-network:
+    driver: bridge

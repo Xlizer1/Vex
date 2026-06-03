@@ -1,6 +1,8 @@
 import { SapphireClient } from "@sapphire/framework";
 import { GatewayIntentBits } from "discord.js";
+import { migrate } from "drizzle-orm/bun-sql/migrator";
 import { config } from "./lib/config";
+import { db } from "./db";
 import { stopVoiceFragPoller } from "./lib/voiceFragPoller";
 
 const client = new SapphireClient({
@@ -26,7 +28,9 @@ async function shutdown() {
 process.on("SIGINT",  shutdown);
 process.on("SIGTERM", shutdown);
 
-client.login(config.DISCORD_TOKEN).catch((err) => {
-  console.error("Failed to log in:", err);
-  process.exit(1);
-});
+migrate(db, { migrationsFolder: "./drizzle" })
+  .then(() => client.login(config.DISCORD_TOKEN))
+  .catch((err) => {
+    console.error("Startup failed:", err);
+    process.exit(1);
+  });
