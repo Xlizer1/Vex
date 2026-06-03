@@ -37,9 +37,9 @@ jobs:
           ENV_CONTENT: ${{ secrets.ENV_FILE }}
           IMAGE: ${{ secrets.DOCKER_USERNAME }}/vex:latest
         with:
-          host: ${{ secrets.PROD_HOST }}
+          host: ${{ secrets.VPS_HOST }}
           username: root
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           envs: ENV_CONTENT,IMAGE
           script: |
             set -e
