@@ -6,5 +6,4 @@ node_modules
 .gitignore
 CLAUDE.md
 README.md
-scripts/
 drizzle.config.ts
