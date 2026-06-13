@@ -40,7 +40,7 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
         with:
           max_attempts: 3
-          timeout_minutes: 2
+          timeout_minutes: 10
           command: |
             set -e
             echo "$SSH_KEY" > /tmp/vps_key
@@ -75,6 +75,8 @@ jobs:
                   POSTGRES_PASSWORD: \${DB_PASSWORD}
                 volumes:
                   - vex-db-data:/var/lib/postgresql/data
+                ports:
+                  - "5433:5432"
                 healthcheck:
                   test: [\"CMD-SHELL\", \"pg_isready -U postgres -d vertex\"]
                   interval: 5s
