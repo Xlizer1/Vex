@@ -10,5 +10,6 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY src ./src
 COPY drizzle ./drizzle
 COPY tsconfig.json ./
+COPY package.json ./
 
 CMD ["bun", "run", "src/index.ts"]
