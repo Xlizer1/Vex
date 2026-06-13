@@ -1,4 +1,4 @@
-import { SapphireClient } from "@sapphire/framework";
+import { SapphireClient, ApplicationCommandRegistries } from "@sapphire/framework";
 import { GatewayIntentBits } from "discord.js";
 import { migrate } from "drizzle-orm/bun-sql/migrator";
 import { config } from "./lib/config";
@@ -16,6 +16,10 @@ const client = new SapphireClient({
   ],
   loadMessageCommandListeners: true,
 });
+
+if (config.GUILD_ID) {
+  ApplicationCommandRegistries.setDefaultGuildIds([config.GUILD_ID]);
+}
 
 client.on("error", (err) => client.logger.error(`Client error: ${err}`));
 
