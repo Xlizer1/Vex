@@ -40,6 +40,10 @@ Each kind of event goes to its own channel in the staff-only `mods` category (cr
 
 The bot needs **View Audit Log** for the "who did it" parts.
 
+### Anti-spam (hacked accounts)
+- If a member posts the same message/image in 3+ channels within 30s, or 5+ links/attachments within 10s, Vex times them out for 24h, deletes the spam, DMs them account-recovery steps, and posts to `#mod-actions` with **Release** / **Ban** buttons. Staff (Timeout Members permission) are exempt. Thresholds live in `src/constants.ts`.
+- `/setup-automod` — Creates/updates Discord AutoMod rules from `src/lib/automodRules.ts` (mention spam, spam content, scam patterns, watch list, slurs), alerting to `#mod-actions`. Requires Community to be enabled.
+
 ### Server Layout
 - `/setup-server` — Applies the channel layout defined in `src/lib/serverLayout.ts`: creates missing categories/channels, renames, reorders, locks the `mods` category to staff roles, makes `readOnly` channels read-only, syncs every other channel to its category's permissions, clears NSFW flags, and strips permissions from rank/FACEIT roles. Never deletes; lists leftover channels instead.
 

@@ -15,3 +15,11 @@ export const MAX_TIMEOUT_DAYS      = 28;
 export const AUDIT_LOG_GRACE_MS    = 1_500;
 export const AUDIT_LOG_RECENCY_MS  = 5_000;
 export const UNIX_SECOND_MS        = 1_000;
+
+// Anti-spam (hacked accounts): same message in N channels, or a burst of links/attachments
+export const SPAM_WINDOW_MS          = 30_000;
+export const SPAM_CHANNEL_THRESHOLD  = 3;
+export const SPAM_MEDIA_WINDOW_MS    = 10_000;
+export const SPAM_MEDIA_THRESHOLD    = 5;
+export const SPAM_TIMEOUT_MS         = 24 * 60 * 60 * 1_000;
+export const AUTOMOD_TIMEOUT_SECONDS = 60 * 60;
