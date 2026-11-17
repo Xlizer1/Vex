@@ -131,7 +131,17 @@ export class SetupServerCommand extends Command {
           used.add(channel.id);
           // Read-only channels keep the overwrites set above; everything else syncs to its category,
           // which clears one-off overwrites (e.g. a channel hidden from everyone but one role).
-          positions.push({ channel: channel.id, position: i, parent: category.id, lockPermissions: !ch.readOnly || !!cat.staffOnly });
+          const sync = !ch.readOnly || !!cat.staffOnly;
+          // Discord's bulk position endpoint allows only one parent change per call, and only syncs
+          // permissions for channels that move — so moves and syncs are done per channel.
+          if (channel.parentId !== category.id) {
+            await channel.edit({ parent: category.id, lockPermissions: sync, reason });
+            notes.push(`Moved ${channel.name} into **${cat.name}**`);
+          } else if (sync && !channel.permissionsLocked) {
+            await channel.lockPermissions();
+            notes.push(`Synced permissions of ${channel.name} with **${cat.name}**`);
+          }
+          positions.push({ channel: channel.id, position: i });
         }
       }
 
