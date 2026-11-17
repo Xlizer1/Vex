@@ -6,8 +6,8 @@ import { BRAND_COLOR, ERROR_COLOR, FLIP_CHALLENGE_TTL_MS } from "../constants";
 
 function buildDisabledRow(acceptId: string, declineId: string) {
   return new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder().setCustomId(acceptId).setLabel("Accept").setStyle(ButtonStyle.Success).setEmoji("✅").setDisabled(true),
-    new ButtonBuilder().setCustomId(declineId).setLabel("Decline").setStyle(ButtonStyle.Danger).setEmoji("❌").setDisabled(true),
+    new ButtonBuilder().setCustomId(acceptId).setLabel("Accept").setStyle(ButtonStyle.Success).setDisabled(true),
+    new ButtonBuilder().setCustomId(declineId).setLabel("Decline").setStyle(ButtonStyle.Danger).setDisabled(true),
   );
 }
 
@@ -66,7 +66,7 @@ export class FlipButtonHandler extends InteractionHandler {
         embeds: [
           new EmbedBuilder()
             .setColor(ERROR_COLOR)
-            .setTitle("🪙 Challenge Declined")
+            .setTitle("Challenge Declined")
             .setDescription(`<@${targetId}> declined the coin flip challenge from <@${challengerId}>.`),
         ],
         components: [disabledRow],
@@ -83,9 +83,9 @@ export class FlipButtonHandler extends InteractionHandler {
         embeds: [
           new EmbedBuilder()
             .setColor(BRAND_COLOR)
-            .setTitle("🪙 Coin Flip Result")
+            .setTitle("Coin Flip Result")
             .setDescription(
-              `<@${winnerId}> won the flip and takes **${amount.toLocaleString()} frags** from <@${loserId}>! 🎉\n\n<@${winnerId}>'s new balance: **${winnerBalance.toLocaleString()} frags**`,
+              `<@${winnerId}> won the flip and takes **${amount.toLocaleString()} frags** from <@${loserId}>!\n\n<@${winnerId}>'s new balance: **${winnerBalance.toLocaleString()} frags**`,
             ),
         ],
         components: [disabledRow],
@@ -96,7 +96,7 @@ export class FlipButtonHandler extends InteractionHandler {
           embeds: [
             new EmbedBuilder()
               .setColor(ERROR_COLOR)
-              .setTitle("🪙 Flip Cancelled")
+              .setTitle("Flip Cancelled")
               .setDescription("One of the players no longer has enough frags to cover the wager."),
           ],
           components: [disabledRow],

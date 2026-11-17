@@ -32,16 +32,16 @@ export class VoiceStateUpdateListener extends Listener {
       let executor: string | null = null;
 
       if (!oldState.channel && newState.channel) {
-        action = `🔊 Joined **${newState.channel.name}**`;
+        action = `Joined **${newState.channel.name}**`;
       } else if (oldState.channel && !newState.channel) {
         executor = await getAuditExecutor(oldState, AuditLogEvent.MemberDisconnect);
         action   = executor
-          ? `🔴 Forcibly disconnected from **${oldState.channel.name}**`
-          : `🔇 Left **${oldState.channel.name}**`;
+          ? `Forcibly disconnected from **${oldState.channel.name}**`
+          : `Left **${oldState.channel.name}**`;
         if (executor) color = ERROR_COLOR;
       } else if (oldState.channel && newState.channel && oldState.channelId !== newState.channelId) {
         executor = await getAuditExecutor(newState, AuditLogEvent.MemberMove);
-        action   = `🔀 Moved **${oldState.channel.name}** → **${newState.channel.name}**`;
+        action   = `Moved **${oldState.channel.name}** → **${newState.channel.name}**`;
         if (executor) color = ERROR_COLOR;
       } else {
         return;

@@ -28,7 +28,7 @@ export class NowPlayingCommand extends Command {
 
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
-        .setTitle("🎵 Now Playing")
+        .setTitle("Now Playing")
         .setDescription(`**[${track.title}](${track.url})**`)
         .setThumbnail(track.thumbnail)
         .addFields(

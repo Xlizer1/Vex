@@ -39,7 +39,7 @@ export class GiveCommand extends Command {
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
         .setDescription(
-          `Sent **${amount.toLocaleString()} frags** to **${target.displayName}** 💰\nYour new balance: **${fromBalance.toLocaleString()} frags**`,
+          `Sent **${amount.toLocaleString()} frags** to **${target.displayName}**\nYour new balance: **${fromBalance.toLocaleString()} frags**`,
         );
 
       return interaction.editReply({ embeds: [embed] });

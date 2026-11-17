@@ -36,10 +36,10 @@ export class FlipCommand extends Command {
 
         const embed = new EmbedBuilder()
           .setColor(won ? BRAND_COLOR : ERROR_COLOR)
-          .setTitle(won ? "🪙 Heads — You Win!" : "🪙 Tails — You Lose!")
+          .setTitle(won ? "Heads — You Win!" : "Tails — You Lose!")
           .setDescription(
             won
-              ? `**${interaction.user.displayName}** won **${amount.toLocaleString()} frags**! 🎉\nNew balance: **${newBalance.toLocaleString()} frags**`
+              ? `**${interaction.user.displayName}** won **${amount.toLocaleString()} frags**!\nNew balance: **${newBalance.toLocaleString()} frags**`
               : `**${interaction.user.displayName}** lost **${amount.toLocaleString()} frags**.\nNew balance: **${newBalance.toLocaleString()} frags**`,
           );
 
@@ -85,20 +85,18 @@ export class FlipCommand extends Command {
         new ButtonBuilder()
           .setCustomId(`flip:accept:${base}`)
           .setLabel("Accept")
-          .setStyle(ButtonStyle.Success)
-          .setEmoji("✅"),
+          .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
           .setCustomId(`flip:decline:${base}`)
           .setLabel("Decline")
-          .setStyle(ButtonStyle.Danger)
-          .setEmoji("❌"),
+          .setStyle(ButtonStyle.Danger),
       );
 
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
-        .setTitle("🪙 Coin Flip Challenge")
+        .setTitle("Coin Flip Challenge")
         .setDescription(
-          `**${interaction.user.displayName}** is challenging <@${target.id}> to a coin flip!\n\n💰 Wager: **${amount.toLocaleString()} frags**\n\n<@${target.id}> — do you accept?`,
+          `**${interaction.user.displayName}** is challenging <@${target.id}> to a coin flip!\n\nWager: **${amount.toLocaleString()} frags**\n\n<@${target.id}> — do you accept?`,
         )
         .setFooter({ text: `Challenge expires in ${FLIP_CHALLENGE_TTL_MS / 60_000} minutes` });
 

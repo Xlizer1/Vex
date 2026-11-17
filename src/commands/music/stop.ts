@@ -28,7 +28,7 @@ export class StopCommand extends Command {
 
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
-        .setDescription("⏹ Stopped and queue cleared.")
+        .setDescription("Stopped and queue cleared.")
         .setFooter({ text: "The Vertex Music" });
 
       return interaction.editReply({ embeds: [embed] });

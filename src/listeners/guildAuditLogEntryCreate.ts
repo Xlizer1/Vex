@@ -45,10 +45,10 @@ function fmtValue(v: unknown): string {
 
 function fmtChanges(entry: GuildAuditLogsEntry): string {
   const lines = entry.changes.map((c) => {
-    if (c.key === "$add")    return `➕ ${fmtValue(c.new)}`;
-    if (c.key === "$remove") return `➖ ${fmtValue(c.new)}`;
+    if (c.key === "$add")    return `Added: ${fmtValue(c.new)}`;
+    if (c.key === "$remove") return `Removed: ${fmtValue(c.new)}`;
     if (c.key === "communication_disabled_until") {
-      return c.new ? `⏱️ Timed out until <t:${Math.floor(Date.parse(String(c.new)) / 1000)}:f>` : "⏱️ Timeout removed";
+      return c.new ? `Timed out until <t:${Math.floor(Date.parse(String(c.new)) / 1000)}:f>` : "Timeout removed";
     }
     return `**${c.key}**: ${fmtValue(c.old)} → ${fmtValue(c.new)}`;
   });

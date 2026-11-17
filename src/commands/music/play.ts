@@ -59,11 +59,11 @@ export class PlayCommand extends Command {
         .setFooter({ text: FOOTER });
 
       if (isFirst) {
-        embed.setTitle("🎵 Now Playing").setDescription(`**[${track.title}](${track.url})**`);
+        embed.setTitle("Now Playing").setDescription(`**[${track.title}](${track.url})**`);
       } else {
         const position = queue.tracks.size;
         embed
-          .setTitle("➕ Added to Queue")
+          .setTitle("Added to Queue")
           .setDescription(`**[${track.title}](${track.url})**`)
           .addFields({ name: "Position", value: `#${position}`, inline: true });
       }

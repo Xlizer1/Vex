@@ -41,10 +41,10 @@ export class QueueCommand extends Command {
 
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
-        .setTitle("📋 Queue")
+        .setTitle("Queue")
         .addFields(
           {
-            name:  "🎵 Now Playing",
+            name:  "Now Playing",
             value: `**[${current.title}](${current.url})** — ${current.duration}`,
           },
           {

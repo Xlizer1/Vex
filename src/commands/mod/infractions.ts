@@ -4,13 +4,6 @@ import { ModerationService } from "../../services/ModerationService";
 import { replyError } from "../../lib/replyError";
 import { BRAND_COLOR, UNIX_SECOND_MS } from "../../constants";
 
-const TYPE_EMOJI: Record<string, string> = {
-  warn: "⚠️",
-  mute: "🔇",
-  kick: "👢",
-  ban:  "🔨",
-};
-
 export class InfractionsCommand extends Command {
   public constructor(context: Command.LoaderContext, options: Command.Options) {
     super(context, { ...options, preconditions: ["AdminOnly"] });
@@ -52,10 +45,9 @@ export class InfractionsCommand extends Command {
         .setThumbnail(target.displayAvatarURL());
 
       for (const inf of records) {
-        const emoji = TYPE_EMOJI[inf.type] ?? "•";
-        const ts    = Math.floor(inf.createdAt.getTime() / UNIX_SECOND_MS);
+        const ts = Math.floor(inf.createdAt.getTime() / UNIX_SECOND_MS);
         embed.addFields({
-          name:  `${emoji} Case #${inf.id} — ${inf.type.toUpperCase()}`,
+          name:  `Case #${inf.id} — ${inf.type.toUpperCase()}`,
           value: `**Reason:** ${inf.reason}\n**Moderator:** <@${inf.moderatorId}>\n**Date:** <t:${ts}:D>`,
         });
       }

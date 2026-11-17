@@ -53,7 +53,7 @@ export class SetupServerCommand extends Command {
 
     const staffRoles = STAFF_ROLE_NAMES.flatMap((n) => guild.roles.cache.find((r) => r.name === n) ?? []);
     const missingStaff = STAFF_ROLE_NAMES.filter((n) => !staffRoles.some((r) => r.name === n));
-    if (missingStaff.length) notes.push(`⚠️ Staff roles not found: ${missingStaff.join(", ")} — they won't see the staff category.`);
+    if (missingStaff.length) notes.push(`Warning: staff roles not found: ${missingStaff.join(", ")} — they won't see the staff category.`);
 
     const staffOverwrites: OverwriteResolvable[] = [
       { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
@@ -88,10 +88,10 @@ export class SetupServerCommand extends Command {
             permissionOverwrites: cat.staffOnly ? staffOverwrites : undefined,
             reason,
           });
-          notes.push(`➕ Category **${cat.name}**`);
+          notes.push(`Created category **${cat.name}**`);
         } else {
           if (category.name !== cat.name) {
-            notes.push(`✏️ Category **${category.name}** → **${cat.name}**`);
+            notes.push(`Renamed category **${category.name}** → **${cat.name}**`);
             await category.setName(cat.name, reason);
           }
           if (cat.staffOnly) await category.permissionOverwrites.set(staffOverwrites, reason);
@@ -111,19 +111,19 @@ export class SetupServerCommand extends Command {
               permissionOverwrites: cat.staffOnly ? staffOverwrites : ch.readOnly ? readOnlyOverwrites : undefined,
               reason,
             })) as TextChannel | VoiceChannel;
-            notes.push(`➕ ${ch.type === ChannelType.GuildVoice ? "🔊" : "#"}${ch.name}`);
+            notes.push(`Created ${ch.type === ChannelType.GuildVoice ? "voice channel " : "#"}${ch.name}`);
           } else {
             const edit: Record<string, unknown> = {};
             if (channel.name !== ch.name) {
               edit.name = ch.name;
-              notes.push(`✏️ ${channel.name} → ${ch.name}`);
+              notes.push(`Renamed ${channel.name} → ${ch.name}`);
             }
             if (ch.topic !== undefined && "topic" in channel && channel.topic !== ch.topic) edit.topic = ch.topic;
             if (ch.userLimit !== undefined && "userLimit" in channel && channel.userLimit !== ch.userLimit) edit.userLimit = ch.userLimit;
             // The layout has no NSFW channels; an NSFW flag means a misclick (it age-gates the channel).
             if (channel.nsfw) {
               edit.nsfw = false;
-              notes.push(`🔞 Removed NSFW flag from ${channel.name}`);
+              notes.push(`Removed NSFW flag from ${channel.name}`);
             }
             if (Object.keys(edit).length) await channel.edit({ ...edit, reason });
             if (ch.readOnly && !cat.staffOnly) await channel.permissionOverwrites.set(readOnlyOverwrites, reason);
@@ -142,21 +142,21 @@ export class SetupServerCommand extends Command {
         const role = guild.roles.cache.find((r) => r.name === name);
         if (!role || role.permissions.bitfield === 0n) continue;
         if (!role.editable) {
-          notes.push(`⚠️ Can't edit role **${name}** — move Vex's role above it`);
+          notes.push(`Warning: can't edit role **${name}** — move Vex's role above it`);
           continue;
         }
         await role.setPermissions([], reason);
-        notes.push(`🧹 Cleared permissions on **${name}**`);
+        notes.push(`Cleared permissions on **${name}**`);
       }
     } catch (err) {
       this.container.logger.error(err);
-      notes.push(`❌ Stopped early: ${err instanceof Error ? err.message : err}`);
+      notes.push(`Error, stopped early: ${err instanceof Error ? err.message : err}`);
     }
 
     const leftover = all.filter((c: GuildBasedChannel) => !used.has(c.id));
     if (leftover.length) {
       notes.push(`\n**Not in layout (left alone — delete by hand if unwanted):**`);
-      notes.push(leftover.map((c) => (c.type === ChannelType.GuildCategory ? `📁 ${c.name}` : `<#${c.id}>`)).join(", "));
+      notes.push(leftover.map((c) => (c.type === ChannelType.GuildCategory ? `${c.name} (category)` : `<#${c.id}>`)).join(", "));
     }
 
     const summary = notes.length ? notes.join("\n") : "Everything already matches the layout.";

@@ -26,7 +26,7 @@ export class DailyCommand extends Command {
         .setColor(BRAND_COLOR)
         .setTitle("Daily Frags Claimed!")
         .setDescription(
-          `You claimed your daily **${DAILY_FRAGS} frags**! 💰\nNew balance: **${newBalance.toLocaleString()} frags**`,
+          `You claimed your daily **${DAILY_FRAGS} frags**!\nNew balance: **${newBalance.toLocaleString()} frags**`,
         );
 
       return interaction.editReply({ embeds: [embed] });

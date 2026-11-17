@@ -26,7 +26,7 @@ export class ResumeCommand extends Command {
 
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
-        .setDescription("▶️ Resumed.")
+        .setDescription("Resumed.")
         .setFooter({ text: "The Vertex Music" });
 
       return interaction.editReply({ embeds: [embed] });

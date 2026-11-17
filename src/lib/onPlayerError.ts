@@ -16,7 +16,7 @@ export function registerPlayerError(player: Player): void {
 
       const embed = new EmbedBuilder()
         .setColor(ERROR_COLOR)
-        .setTitle("⚠️ Player Error")
+        .setTitle("Player Error")
         .setDescription("An error occurred while playing. Skipping to the next track.")
         .setFooter({ text: "The Vertex Music" });
 

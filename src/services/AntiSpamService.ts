@@ -58,10 +58,10 @@ export const AntiSpamService = {
 
     const embed = new EmbedBuilder()
       .setColor(ERROR_COLOR)
-      .setTitle("🚨 Possible hacked account")
+      .setTitle("Possible hacked account")
       .addFields(
         { name: "User",     value: `${author} — ${author.tag}`, inline: true },
-        { name: "Action",   value: timedOut ? "Timed out 24h, messages deleted" : "⚠️ Could not time out — messages deleted", inline: true },
+        { name: "Action",   value: timedOut ? "Timed out 24h, messages deleted" : "Could not time out — messages deleted", inline: true },
         { name: "Messages", value: `${hits.length} in ${channels}` },
         { name: "Sample",   value: sample },
       )

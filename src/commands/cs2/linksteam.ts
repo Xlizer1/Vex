@@ -41,8 +41,7 @@ export class LinkSteamCommand extends Command {
         new ButtonBuilder()
           .setLabel("Open my Steam Profile")
           .setStyle(ButtonStyle.Link)
-          .setURL("https://steamcommunity.com/my/")
-          .setEmoji("🔗"),
+          .setURL("https://steamcommunity.com/my/"),
       );
 
       return interaction.editReply({ embeds: [embed], components: [row] });

@@ -38,11 +38,11 @@ export class AntiSpamButtonHandler extends InteractionHandler {
         const member = await guild.members.fetch(userId).catch(() => null);
         if (!member) return interaction.reply({ content: "That member is no longer in the server.", flags: MessageFlags.Ephemeral });
         await member.timeout(null, `Released by ${interaction.user.tag} (anti-spam)`);
-        outcome = `✅ Released by ${interaction.user}`;
+        outcome = `Released by ${interaction.user}`;
       } else {
         const user = await this.container.client.users.fetch(userId);
         const infraction = await ModerationService.ban(guild, user, interaction.user, "Compromised account spamming (anti-spam)");
-        outcome = `🔨 Banned by ${interaction.user} — Case #${infraction.id}`;
+        outcome = `Banned by ${interaction.user} — Case #${infraction.id}`;
       }
 
       const embed = EmbedBuilder.from(interaction.message.embeds[0]!).addFields({ name: "Resolved", value: outcome });

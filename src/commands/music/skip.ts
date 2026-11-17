@@ -27,7 +27,7 @@ export class SkipCommand extends Command {
 
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
-        .setDescription(`⏭ Skipped **${skipped?.title ?? "current track"}**.`)
+        .setDescription(`Skipped **${skipped?.title ?? "current track"}**.`)
         .setFooter({ text: "The Vertex Music" });
 
       return interaction.editReply({ embeds: [embed] });

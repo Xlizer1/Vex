@@ -32,7 +32,7 @@ export class BalanceCommand extends Command {
         .setColor(BRAND_COLOR)
         .setTitle("Frag Balance")
         .setDescription(
-          `**${isSelf ? "You" : target.displayName}** ${isSelf ? "have" : "has"} **${frags.toLocaleString()} frags** 💰`,
+          `**${isSelf ? "You" : target.displayName}** ${isSelf ? "have" : "has"} **${frags.toLocaleString()} frags**`,
         )
         .setThumbnail(target.displayAvatarURL());
 

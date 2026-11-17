@@ -70,23 +70,23 @@ export class SetupAutomodCommand extends Command {
       try {
         if (match) {
           await match.edit(options);
-          notes.push(`✏️ Updated **${rule.name}**${match.name !== rule.name ? ` (was "${match.name}")` : ""}`);
+          notes.push(`Updated **${rule.name}**${match.name !== rule.name ? ` (was "${match.name}")` : ""}`);
         } else {
           await guild.autoModerationRules.create({ ...options, triggerType: rule.triggerType });
-          notes.push(`➕ Created **${rule.name}**`);
+          notes.push(`Created **${rule.name}**`);
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         // Discord's own built-in rules (created with Community / Safety Setup) can't be edited by bots.
         if (match && match.name !== rule.name && msg.includes("404")) {
-          notes.push(`⚠️ **${rule.name}**: Discord's built-in rule "${match.name}" is in the way and bots can't edit it — set it by hand in Server Settings → AutoMod.`);
+          notes.push(`Skipped **${rule.name}**: Discord's built-in rule "${match.name}" is in the way and bots can't edit it — set it by hand in Server Settings → AutoMod.`);
         } else {
-          notes.push(`❌ **${rule.name}**: ${msg}`);
+          notes.push(`Failed **${rule.name}**: ${msg}`);
         }
       }
     }
 
-    if (notes.some((n) => n.startsWith("❌"))) {
+    if (notes.some((n) => n.startsWith("Failed"))) {
       notes.push("\nIf every rule failed, enable **Community** in Server Settings first — AutoMod needs it.");
     }
     notes.push(`\nAlerts go to ${alertChannel}. Send a test message for each rule from a non-admin account.`);

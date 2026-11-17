@@ -17,6 +17,7 @@ Vex handles everything on the server: member onboarding, role management, modera
 - `/linksteam` — Link a Steam account (URL, Steam64 ID, or vanity name)
 - `/stats [user]` — Fetch CS2 stats from Leetify (ratings, Premier rank, FACEIT level, HS%, win rate, recent matches)
 - `/rank <tier>` — Self-assign a CS2 Premier rating role (7 tiers)
+- `/lfg <mode> <players> [rank] [note]` — Post a Looking For Group card with Join/Leave buttons; pings nearby rank roles and the squad when full
 
 ### Economy — Frags
 - Passive earning: 5 frags per message (60s cooldown), 5 frags per active voice minute
@@ -85,13 +86,13 @@ cp .env.example .env
 
 | Variable               | Required | Description                                      |
 |------------------------|----------|--------------------------------------------------|
-| `DISCORD_TOKEN`        | ✅       | Bot token from Discord Developer Portal          |
+| `DISCORD_TOKEN`        | Yes      | Bot token from Discord Developer Portal          |
 | `CLIENT_ID`            |          | Bot application ID                               |
 | `GUILD_ID`             |          | Your server ID (for dev command registration)    |
-| `WELCOME_CHANNEL_ID`   | ✅       | Channel to send welcome messages                 |
-| `EDGE_ROLE_ID`         | ✅       | Role assigned to all new members                 |
+| `WELCOME_CHANNEL_ID`   | Yes      | Channel to send welcome messages                 |
+| `EDGE_ROLE_ID`         | Yes      | Role assigned to all new members                 |
 | `RANKS_CHANNEL_ID`     |          | Channel for rank panels                          |
-| `DATABASE_URL`         | ✅       | PostgreSQL connection string                     |
+| `DATABASE_URL`         | Yes      | PostgreSQL connection string                     |
 | `STEAM_API_KEY`        |          | Steam Web API key (for vanity URL resolution)    |
 | `LEETIFY_API_KEY`      |          | Leetify API key (for CS2 stats)                  |
 

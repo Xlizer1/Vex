@@ -26,7 +26,7 @@ export class PauseCommand extends Command {
 
       const embed = new EmbedBuilder()
         .setColor(BRAND_COLOR)
-        .setDescription("⏸ Paused.")
+        .setDescription("Paused.")
         .setFooter({ text: "The Vertex Music" });
 
       return interaction.editReply({ embeds: [embed] });

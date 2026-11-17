@@ -60,16 +60,16 @@ export class StatsCommand extends Command {
 
       const ratingLine = rating
         ? [
-            `🎯 Aim: **${fmt(rating.aim)}**`,
-            `📍 Positioning: **${fmt(rating.positioning)}**`,
-            `💣 Utility: **${fmt(rating.utility)}**`,
+            `Aim: **${fmt(rating.aim)}**`,
+            `Positioning: **${fmt(rating.positioning)}**`,
+            `Utility: **${fmt(rating.utility)}**`,
           ].join("  ·  ")
         : "No rating data yet";
 
       const recentLines = (recent_matches ?? [])
         .slice(0, RECENT_MATCHES_COUNT)
         .map((m) => {
-          const outcome = m.outcome === "win" ? "✅" : m.outcome === "loss" ? "❌" : "➖";
+          const outcome = m.outcome === "win" ? "W" : m.outcome === "loss" ? "L" : "D";
           const score   = `${m.score[0]}-${m.score[1]}`;
           const rating  = m.leetify_rating != null ? (m.leetify_rating * 100).toFixed(2) : "N/A";
           return `${outcome} **${fmtMap(m.map_name)}** ${score}  ·  Rating: ${rating}  ·  <t:${toUnixSeconds(m.finished_at)}:d>`;
@@ -84,14 +84,14 @@ export class StatsCommand extends Command {
         .addFields({ name: "Ratings", value: ratingLine });
 
       if (ranks?.premier != null) {
-        embed.addFields({ name: "🏆 Premier", value: `**${ranks.premier.toLocaleString()}**`, inline: true });
+        embed.addFields({ name: "Premier", value: `**${ranks.premier.toLocaleString()}**`, inline: true });
       }
 
       if (ranks?.faceit != null) {
         const faceitVal = ranks.faceit_elo != null
           ? `Level **${ranks.faceit}** (${ranks.faceit_elo} ELO)`
           : `Level **${ranks.faceit}**`;
-        embed.addFields({ name: "🎮 FACEIT", value: faceitVal, inline: true });
+        embed.addFields({ name: "FACEIT", value: faceitVal, inline: true });
       }
 
       embed

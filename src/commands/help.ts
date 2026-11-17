@@ -31,9 +31,17 @@ const COMMANDS: Record<string, {
       "`tier` (choice, required) — One of the 7 Premier rating ranges:\n`1,000–4,999` · `5,000–9,999` · `10,000–14,999` · `15,000–19,999` · `20,000–24,999` · `25,000–29,999` · `30,000+`",
     notes: "Requires an admin to have run `/setup-ranks` first to create the roles and panel. Reply is only visible to you.",
   },
+  lfg: {
+    description:
+      "Posts a Looking For Group card. Others click **Join** to fill the squad; when it's full everyone gets pinged with the voice channel. Picking a rank pings that tier and the ones either side.",
+    usage: "/lfg <mode> <players> [rank] [note]",
+    options:
+      "`mode` (choice, required) — Premier, FACEIT, Competitive, Wingman, Casual / DM.\n`players` (1–4, required) — How many more you need.\n`rank` (choice, optional) — Your Premier tier or FACEIT level.\n`note` (text, optional) — e.g. 'mic required'.",
+    notes: "Only works in #lfg. If you're in a voice channel it's linked on the card. Cards delete themselves after 45 minutes; the host (or a mod) can **Close** early.",
+  },
   warn: {
     description:
-      "Issues a formal warning to a server member. The warning is stored in the database with a case number, the member receives a DM explaining the reason, and the action is logged to #mod-logs.",
+      "Issues a formal warning to a server member. The warning is stored in the database with a case number, the member receives a DM explaining the reason, and the action is logged to #mod-actions.",
     usage: "/warn <user> <reason>",
     options:
       "`user` (mention, required) — The member to warn.\n`reason` (text, required) — The reason for the warning (shown in the DM and mod log).",
@@ -41,7 +49,7 @@ const COMMANDS: Record<string, {
   },
   mute: {
     description:
-      "Applies a Discord timeout to a member for a specified duration. The member cannot send messages, react, join voice channels, or interact with the server until the timeout expires. The action is stored as an infraction, the member is DM'd, and it is logged to #mod-logs.",
+      "Applies a Discord timeout to a member for a specified duration. The member cannot send messages, react, join voice channels, or interact with the server until the timeout expires. The action is stored as an infraction, the member is DM'd, and it is logged to #mod-actions.",
     usage: "/mute <user> <duration> <reason>",
     options:
       "`user` (mention, required) — The member to mute.\n`duration` (text, required) — How long to mute them. Format: a number followed by `m` (minutes), `h` (hours), `d` (days), or `w` (weeks). Examples: `30m`, `2h`, `7d`, `1w`. Maximum is 28 days.\n`reason` (text, required) — The reason for the mute.",
@@ -49,7 +57,7 @@ const COMMANDS: Record<string, {
   },
   kick: {
     description:
-      "Kicks a member from the server. They are removed immediately but can rejoin with an invite. The action is stored as an infraction, the member is DM'd before being kicked, and it is logged to #mod-logs.",
+      "Kicks a member from the server. They are removed immediately but can rejoin with an invite. The action is stored as an infraction, the member is DM'd before being kicked, and it is logged to #mod-actions.",
     usage: "/kick <user> <reason>",
     options:
       "`user` (mention, required) — The member to kick.\n`reason` (text, required) — The reason for the kick.",
@@ -57,7 +65,7 @@ const COMMANDS: Record<string, {
   },
   ban: {
     description:
-      "Bans a member from the server. They are removed and blocked from rejoining. Optionally, you can set a duration for a temporary ban and choose to delete their recent messages. The action is stored as an infraction, the member is DM'd before being banned, and it is logged to #mod-logs.",
+      "Bans a member from the server. They are removed and blocked from rejoining. Optionally, you can set a duration for a temporary ban and choose to delete their recent messages. The action is stored as an infraction, the member is DM'd before being banned, and it is logged to #mod-actions.",
     usage: "/ban <user> <reason> [duration] [delete_days]",
     options:
       "`user` (mention, required) — The member to ban.\n`reason` (text, required) — The reason for the ban.\n`duration` (text, optional) — How long to ban them. Same format as `/mute` (e.g. `7d`, `1w`). Omit for a permanent ban.\n`delete_days` (number, optional) — Number of days of messages to delete (0–7, default 0).",
@@ -132,19 +140,19 @@ const COMMANDS: Record<string, {
 const OVERVIEW_FIELDS = [
   {
     name: "CS2",
-    value: "`/linksteam` — Link your Steam account\n`/stats` — View CS2 stats from Leetify\n`/rank` — Self-assign a CS2 Premier rating role",
+    value: "`/linksteam` — Link your Steam account\n`/stats` — View CS2 stats from Leetify\n`/rank` — Self-assign a CS2 Premier rating role\n`/lfg` — Post a Looking For Group card",
   },
   {
-    name: "Moderation  🔒 Moderator only",
+    name: "Moderation (moderators only)",
     value:
       "`/warn` — Issue a warning to a member\n`/mute` — Timeout a member\n`/kick` — Kick a member from the server\n`/ban` — Ban a member from the server\n`/infractions` — View a user's infraction history",
   },
   {
-    name: "Setup  ⚙️ Admin only",
-    value: "`/setup-ranks` — Create CS2 rating roles and post the selection panel\n`/setup-faceit` — Create FACEIT level roles and post the selection panel",
+    name: "Setup (owner only)",
+    value: "`/setup-ranks` — Create CS2 rating roles and post the selection panel\n`/setup-faceit` — Create FACEIT level roles and post the selection panel\n`/setup-server` — Apply the channel layout and permissions\n`/setup-automod` — Create or update AutoMod rules",
   },
   {
-    name: "Music  🎵 Music channel only",
+    name: "Music (music channel only)",
     value: "`/play` — Play a song or add to queue\n`/pause` — Pause playback\n`/resume` — Resume playback\n`/skip` — Skip current track\n`/stop` — Stop and clear queue\n`/queue` — Show the queue\n`/nowplaying` — Show current track",
   },
   {
