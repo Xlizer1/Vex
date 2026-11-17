@@ -2,7 +2,7 @@ import { Listener } from "@sapphire/framework";
 import { EmbedBuilder, Events, TextChannel, type GuildMember } from "discord.js";
 import { config } from "../lib/config";
 import { UserRepository } from "../repositories/UserRepository";
-import { sendAuditLog } from "../lib/auditLog";
+import { sendLog } from "../lib/auditLog";
 import { BRAND_COLOR, UNIX_SECOND_MS } from "../constants";
 
 export class GuildMemberAddListener extends Listener {
@@ -35,7 +35,7 @@ export class GuildMemberAddListener extends Listener {
         )
         .setTimestamp();
 
-      await sendAuditLog(member.guild, embed);
+      await sendLog(member.guild, "members", embed);
     } catch (err) {
       this.container.logger.error(`GuildMemberAdd error for ${member.id}: ${err}`);
     }

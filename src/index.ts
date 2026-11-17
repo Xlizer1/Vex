@@ -13,6 +13,7 @@ const client = new SapphireClient({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildModeration, // audit log entries → mod/server logs
   ],
   loadMessageCommandListeners: true,
 });

@@ -1,12 +1,17 @@
 import { container } from "@sapphire/framework";
 import type { EmbedBuilder, Guild } from "discord.js";
-import { config } from "./config";
+import { LOG_CHANNELS, STAFF_CATEGORY, type LogKind } from "./serverLayout";
 
-export async function sendAuditLog(guild: Guild, embed: EmbedBuilder): Promise<void> {
-  if (!config.AUDIT_LOG_CHANNEL_ID) return;
-  const channel = await guild.channels.fetch(config.AUDIT_LOG_CHANNEL_ID).catch(() => null);
-  if (!channel?.isTextBased()) return;
+export async function sendLog(guild: Guild, kind: LogKind, embed: EmbedBuilder): Promise<void> {
+  const name = LOG_CHANNELS[kind];
+  const channel = guild.channels.cache.find(
+    (c) => c.name === name && c.parent?.name.toLowerCase() === STAFF_CATEGORY.toLowerCase(),
+  );
+  if (!channel?.isSendable()) {
+    container.logger.warn(`Log channel #${name} not found in "${STAFF_CATEGORY}" — run /setup-server`);
+    return;
+  }
   await channel.send({ embeds: [embed] }).catch((err) =>
-    container.logger.warn(`Failed to send audit log: ${err}`),
+    container.logger.warn(`Failed to send ${kind} log: ${err}`),
   );
 }

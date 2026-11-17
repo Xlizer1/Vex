@@ -1,6 +1,6 @@
 import { Listener } from "@sapphire/framework";
 import { AuditLogEvent, EmbedBuilder, Events, type VoiceState } from "discord.js";
-import { sendAuditLog } from "../lib/auditLog";
+import { sendLog } from "../lib/auditLog";
 import { BRAND_COLOR, ERROR_COLOR, AUDIT_LOG_GRACE_MS, AUDIT_LOG_RECENCY_MS } from "../constants";
 
 async function getAuditExecutor(state: VoiceState, event: AuditLogEvent): Promise<string | null> {
@@ -59,7 +59,7 @@ export class VoiceStateUpdateListener extends Listener {
         .addFields(fields)
         .setTimestamp();
 
-      await sendAuditLog(member.guild, embed);
+      await sendLog(member.guild, "voice", embed);
     } catch (err) {
       this.container.logger.error(`VoiceStateUpdate audit error for ${member.id}: ${err}`);
     }

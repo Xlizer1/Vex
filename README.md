@@ -31,11 +31,17 @@ Vex handles everything on the server: member onboarding, role management, modera
 - All mod actions also mirrored to #audit-logs
 
 ### Logging
-Mirrors the following to #audit-logs:
-- Member join / leave
-- Message edits (before & after)
-- Message deletions
-- Voice channel join / leave / move (with forced action attribution)
+Each kind of event goes to its own channel in the staff-only `mods` category (created by `/setup-server`):
+- `#mod-actions` — bans, kicks, timeouts, warns, whether done with Vex or Discord's own menus
+- `#member-log` — joins, leaves, role changes, nickname changes (with who did it)
+- `#message-log` — edits, deletions, bulk deletes
+- `#voice-log` — voice join / leave / move (with forced action attribution)
+- `#server-log` — channels, roles, permission overwrites, invites, webhooks, bots, server settings
+
+The bot needs **View Audit Log** for the "who did it" parts.
+
+### Server Layout
+- `/setup-server` — Applies the channel layout defined in `src/lib/serverLayout.ts`: creates missing categories/channels, renames, reorders, locks the `mods` category to staff roles, makes `readOnly` channels read-only, syncs every other channel to its category's permissions, clears NSFW flags, and strips permissions from rank/FACEIT roles. Never deletes; lists leftover channels instead.
 
 ### Role Panels
 - `/setup-ranks` — Create CS2 Premier rating roles and post a button panel
@@ -80,8 +86,6 @@ cp .env.example .env
 | `GUILD_ID`             |          | Your server ID (for dev command registration)    |
 | `WELCOME_CHANNEL_ID`   | ✅       | Channel to send welcome messages                 |
 | `EDGE_ROLE_ID`         | ✅       | Role assigned to all new members                 |
-| `MOD_LOG_CHANNEL_ID`   |          | Channel for moderation logs                      |
-| `AUDIT_LOG_CHANNEL_ID` |          | Channel for audit logs                           |
 | `RANKS_CHANNEL_ID`     |          | Channel for rank panels                          |
 | `DATABASE_URL`         | ✅       | PostgreSQL connection string                     |
 | `STEAM_API_KEY`        |          | Steam Web API key (for vanity URL resolution)    |

@@ -42,6 +42,7 @@ export class SetupFaceitCommand extends Command {
         const created = await guild.roles.create({
           name: level.name,
           color: level.color,
+          permissions: [], // label-only role; omitting this copies @everyone's perms
           reason: "Created by /setup-faceit",
         });
         resolvedRoles.push({ label: `Level ${level.id.slice(3)}`, roleId: created.id });

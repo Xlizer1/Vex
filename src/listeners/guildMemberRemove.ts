@@ -1,7 +1,7 @@
 import { Listener } from "@sapphire/framework";
 import { EmbedBuilder, Events, type GuildMember } from "discord.js";
 import { UserRepository } from "../repositories/UserRepository";
-import { sendAuditLog } from "../lib/auditLog";
+import { sendLog } from "../lib/auditLog";
 import { ERROR_COLOR } from "../constants";
 
 export class GuildMemberRemoveListener extends Listener {
@@ -28,7 +28,7 @@ export class GuildMemberRemoveListener extends Listener {
         )
         .setTimestamp();
 
-      await sendAuditLog(member.guild, embed);
+      await sendLog(member.guild, "members", embed);
     } catch (err) {
       this.container.logger.error(`GuildMemberRemove error for ${member.id}: ${err}`);
     }

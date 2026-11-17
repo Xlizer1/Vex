@@ -12,8 +12,6 @@ export const config = {
   CLIENT_ID:                process.env.CLIENT_ID,
   GUILD_ID:                 process.env.GUILD_ID,
   RANKS_CHANNEL_ID:         process.env.RANKS_CHANNEL_ID,
-  MOD_LOG_CHANNEL_ID:       process.env.MOD_LOG_CHANNEL_ID,
-  AUDIT_LOG_CHANNEL_ID:     process.env.AUDIT_LOG_CHANNEL_ID,
   SKIN_LISTINGS_CHANNEL_ID: process.env.SKIN_LISTINGS_CHANNEL_ID,
   DATABASE_URL:             process.env.DATABASE_URL!,
   REDIS_URL:                process.env.REDIS_URL,

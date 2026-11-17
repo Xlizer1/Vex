@@ -1,6 +1,6 @@
 import { Listener } from "@sapphire/framework";
 import { EmbedBuilder, Events, type Message, type PartialMessage } from "discord.js";
-import { sendAuditLog } from "../lib/auditLog";
+import { sendLog } from "../lib/auditLog";
 import { BRAND_COLOR } from "../constants";
 
 export class MessageUpdateListener extends Listener {
@@ -30,7 +30,7 @@ export class MessageUpdateListener extends Listener {
         .setFooter({ text: "Jump to message" })
         .setTimestamp();
 
-      await sendAuditLog(newMessage.guild, embed);
+      await sendLog(newMessage.guild, "messages", embed);
     } catch (err) {
       this.container.logger.error(`MessageUpdate audit error: ${err}`);
     }

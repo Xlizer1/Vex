@@ -42,6 +42,7 @@ export class SetupRanksCommand extends Command {
         const created = await guild.roles.create({
           name: rank.name,
           color: rank.color,
+          permissions: [], // label-only role; omitting this copies @everyone's perms
           reason: "Created by /setup-ranks",
         });
         resolvedRoles.push({ label: rank.name, roleId: created.id });

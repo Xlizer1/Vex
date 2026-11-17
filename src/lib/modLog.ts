@@ -1,9 +1,7 @@
-import { container } from "@sapphire/framework";
 import { EmbedBuilder, type Guild, type User } from "discord.js";
-import { config } from "./config";
 import { type Infraction } from "../db/schema";
 import { formatDuration } from "./parseDuration";
-import { sendAuditLog } from "./auditLog";
+import { sendLog } from "./auditLog";
 import { BRAND_COLOR, ERROR_COLOR, UNIX_SECOND_MS } from "../constants";
 
 const TYPE_COLORS: Record<string, number> = {
@@ -26,11 +24,6 @@ export async function sendModLog(
   target: User,
   moderator: User,
 ): Promise<void> {
-  if (!config.MOD_LOG_CHANNEL_ID) return;
-
-  const channel = await guild.channels.fetch(config.MOD_LOG_CHANNEL_ID).catch(() => null);
-  if (!channel?.isTextBased()) return;
-
   const embed = new EmbedBuilder()
     .setColor(TYPE_COLORS[infraction.type] ?? BRAND_COLOR)
     .setTitle(`${TYPE_LABELS[infraction.type] ?? infraction.type} — Case #${infraction.id}`)
@@ -49,8 +42,5 @@ export async function sendModLog(
     embed.addFields({ name: "Expires", value: `<t:${ts}:R>`, inline: true });
   }
 
-  await channel.send({ embeds: [embed] }).catch((err) =>
-    container.logger.warn(`Failed to send mod log: ${err}`),
-  );
-  await sendAuditLog(guild, embed);
+  await sendLog(guild, "modActions", embed);
 }

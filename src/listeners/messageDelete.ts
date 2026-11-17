@@ -1,6 +1,6 @@
 import { Listener } from "@sapphire/framework";
 import { EmbedBuilder, Events, type Message, type PartialMessage } from "discord.js";
-import { sendAuditLog } from "../lib/auditLog";
+import { sendLog } from "../lib/auditLog";
 import { ERROR_COLOR } from "../constants";
 
 export class MessageDeleteListener extends Listener {
@@ -33,7 +33,7 @@ export class MessageDeleteListener extends Listener {
         embed.addFields({ name: "Attachments", value: names });
       }
 
-      await sendAuditLog(message.guild, embed);
+      await sendLog(message.guild, "messages", embed);
     } catch (err) {
       this.container.logger.error(`MessageDelete audit error: ${err}`);
     }
