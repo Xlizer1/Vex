@@ -76,7 +76,13 @@ export class SetupAutomodCommand extends Command {
           notes.push(`➕ Created **${rule.name}**`);
         }
       } catch (err) {
-        notes.push(`❌ **${rule.name}**: ${err instanceof Error ? err.message : err}`);
+        const msg = err instanceof Error ? err.message : String(err);
+        // Discord's own built-in rules (created with Community / Safety Setup) can't be edited by bots.
+        if (match && match.name !== rule.name && msg.includes("404")) {
+          notes.push(`⚠️ **${rule.name}**: Discord's built-in rule "${match.name}" is in the way and bots can't edit it — set it by hand in Server Settings → AutoMod.`);
+        } else {
+          notes.push(`❌ **${rule.name}**: ${msg}`);
+        }
       }
     }
 
