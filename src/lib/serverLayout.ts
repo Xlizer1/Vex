@@ -69,6 +69,14 @@ export const SERVER_LAYOUT: LayoutCategory[] = [
     ],
   },
   {
+    name: "GTA 6",
+    channels: [
+      text("gta-chat", { topic: "GTA 6 talk — NO story spoilers here, use #gta-spoilers. Screenshots and clips go in #clips." }),
+      text("gta-spoilers", { topic: "Story spoilers allowed. Enter at your own risk." }),
+      voice("GTA 6"),
+    ],
+  },
+  {
     name: "Chill",
     channels: [
       voice("General"),
