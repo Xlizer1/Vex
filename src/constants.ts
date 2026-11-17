@@ -23,3 +23,6 @@ export const SPAM_MEDIA_WINDOW_MS    = 10_000;
 export const SPAM_MEDIA_THRESHOLD    = 5;
 export const SPAM_TIMEOUT_MS         = 24 * 60 * 60 * 1_000;
 export const AUTOMOD_TIMEOUT_SECONDS = 60 * 60;
+
+// LFG cards delete themselves after this (in-memory timer; clicks after expiry are also rejected)
+export const LFG_TTL_MS = 45 * 60 * 1_000;
